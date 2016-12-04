@@ -318,10 +318,10 @@ void special(int key, int x, int y)
 		case GLUT_KEY_UP:
 			mod = glutGetModifiers();
 	        if (mod==GLUT_ACTIVE_SHIFT){
-	        	//translate shape and increase its X scale
+	        	//translate shape and increase its Z scale
 	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
 				if (it->selected){
-					it->position[1] += 1;
+					it->position[2] -= 1;
 					
 				}
 			}
@@ -344,10 +344,10 @@ void special(int key, int x, int y)
 		case GLUT_KEY_DOWN:
 			mod = glutGetModifiers();
 	        if (mod==GLUT_ACTIVE_SHIFT){
-	        	//translate shape and increase its X scale
+	        	//translate shape and increase its z scale
 	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
 				if (it->selected){
-					it->position[1] -= 1;
+					it->position[2] += 1;
 					
 				}
 			}
@@ -927,7 +927,7 @@ void callBackInit(){
 
 void printInstructions(){
 	cout<<"Natasha DeCoste 001206976"<<endl;
-	cout<<"Troy Kuang 00XXXXXXX"<<endl;
+	cout<<"Troy Kuang 001402031"<<endl;
 	cout<<endl<<endl<<endl;
 
 	cout<<"Key Controls:"<<endl;

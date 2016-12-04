@@ -558,9 +558,9 @@ void init(void)
 
 	
 	//glEnable(GL_COLOR_MATERIAL);
-	// glFrontFace(GL_CCW);
-	// glCullFace(GL_BACK);
-	// glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 
 
 	glMatrixMode(GL_PROJECTION);

@@ -37,7 +37,7 @@ public:
 	int boundingFaces [6][4];
 	float boundingNorms [6][3];
 	float xMin, xMax, yMin, yMax, zMin, zMax;
-	int size;
+	//int size;
 
 	float norms[6][3];
 	float U [3];

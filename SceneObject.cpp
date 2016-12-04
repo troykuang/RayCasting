@@ -5,9 +5,9 @@ using namespace std;
 
 SceneObject::SceneObject(){
 	type = 1;	//default if they dont set a type
-	selected = false;	//after being created it is selected automatically
+	selected = true;	//after being created it is selected automatically
 	intersected = false;
-	size = 1;
+	/*size = 1;*/
 
 	//to use for the normals
 
@@ -21,9 +21,11 @@ SceneObject::SceneObject(){
 	scale[2] = 1;
 
 	//set at the origin
+
 	position[0] = 5;
 	position[1] = scale[1]/2;
 	position[2] = 5;
+
 
 	//default is original orientation (no rotation)
 	orientation[0] = 0;
@@ -58,8 +60,8 @@ void SceneObject::setType(int i){
 	// 3 is cone
 	// 4 is teapot
 	type = i;
-	if(i == 3){
-		position[2] = 0.0;
+	if(type == 4) {
+		position[1] += scale[1]/4;
 	}
 	updateBounds();
 }
@@ -76,12 +78,25 @@ void SceneObject::updateBounds(){
 /*	double boundingVertices [8][3];
 	int boundingFaces [6][4];
 	double xMin, xMax, yMin, yMax, zMin, zMax;*/
+
 	xMin = position[0]-scale[0]/2;
 	xMax = position[0]+scale[0]/2;
 	yMin = position[1]-scale[1]/2;
 	yMax = position[1]+scale[1]/2;
 	zMin = position[2]-scale[2]/2;
 	zMax = position[2]+scale[2]/2;
+
+	if ( type == 4 ) {
+		//for teapot
+		xMin -= scale[0];
+		xMax += scale[0];	
+		zMin -= scale[2]/3;	
+		zMax += scale[2]/3;
+		yMin -= scale[1]/3;
+		yMax += scale[1]/3;
+		
+		
+	}
 
 	boundingVertices[0][0] = xMin;
 	boundingVertices[0][1] = yMin;

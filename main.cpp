@@ -381,9 +381,15 @@ void CalcIntersections(SceneObject &s){
 		//now that we have our point on the xy plane at the level of the teapot,
 		//use it to see if this point is inside a box centered at the teapots
 		//location
-		if(pt[0] > s.position[0] - BOUND_OFFSET && pt[0] < s.position[0] + BOUND_OFFSET &&
-			pt[1] > s.position[1]- BOUND_OFFSET && pt[1] < s.position[1]+ BOUND_OFFSET &&
-			pt[2] > s.position[2] - BOUND_OFFSET && pt[2] < s.position[2] + BOUND_OFFSET){
+		// if(pt[0] > s.position[0] - BOUND_OFFSET && pt[0] < s.position[0] + BOUND_OFFSET &&
+		// 	pt[1] > s.position[1]- BOUND_OFFSET && pt[1] < s.position[1]+ BOUND_OFFSET &&
+		// 	pt[2] > s.position[2] - BOUND_OFFSET && pt[2] < s.position[2] + BOUND_OFFSET){
+		// 	s.intersected = true;
+		// 	printf("YAAAAAS\n");
+		// }
+		if(pt[0] > s.xMin && pt[0] < s.xMax &&
+			pt[1] > s.yMin && pt[1] < s.yMax &&
+			pt[2] > s.zMin && pt[2] < s.zMax){
 			s.intersected = true;
 			printf("YAAAAAS\n");
 		}
@@ -551,7 +557,7 @@ void init(void)
 	glColor3f(1, 1, 1);
 
 	
-	glEnable(GL_COLOR_MATERIAL);
+	//glEnable(GL_COLOR_MATERIAL);
 	// glFrontFace(GL_CCW);
 	// glCullFace(GL_BACK);
 	// glEnable(GL_CULL_FACE);
@@ -578,16 +584,26 @@ void init(void)
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff0); 
 	glLightfv(GL_LIGHT1, GL_SPECULAR, spec0);
 }
+void Change2False(SceneObject &s){
+	s.selected = false;
+	s.intersected = false;
+}
 
 //save our mouse coords when they change
 void mouse(int btn, int state, int x, int y){
 	mouseX = x;
 	mouseY = WINDOW_SIZE_HEIGHT - y;
 	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				Change2False(*it);
+			}
+	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
 				CalcIntersections(*it);
 			}
+	
+	
 	if (btn == GLUT_LEFT_BUTTON){
-		if (state == GLUT_DOWN){
+		
+		if (state == GLUT_UP){
 			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
 				if (it->intersected){
 					it->selected = true;
@@ -597,9 +613,6 @@ void mouse(int btn, int state, int x, int y){
 	}
 	if (btn == GLUT_RIGHT_BUTTON){
 		if (state == GLUT_DOWN){
-
-
-
 			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
 				if (it->intersected){
 					it = shapes.erase(it);

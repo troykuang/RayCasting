@@ -42,8 +42,8 @@ float amb0[4]  = {0.1, 1, 0.4, 1};
 float diff0[4] = {1, 0.3, 0, 1};
 float spec0[4] = {0, 0, 0.6, 1}; 
 
-float light_pos0[] = {10, 10, 10,1};
-float light_pos1[] = {20, 20, 20, 1};
+float light_pos0[] = {10, 185, -140,1};
+float light_pos1[] = {20, 195, -130, 1};
 
 //material 0
 //turquoise
@@ -455,6 +455,8 @@ void display(void)
 	
 	gluLookAt(camPos[0], camPos[1], camPos[2], 0, 0, 0, 0,1,0);
 	printf("%f,%f,%f\n",camPos[0], camPos[1], camPos[2]);
+	printf("light_pos0: %f,%f,%f\n",light_pos0[0],light_pos0[1],light_pos0[2]);
+	printf("light_pos1: %f,%f,%f\n",light_pos1[0],light_pos1[1],light_pos1[2]);
 	
 	glPushMatrix();
 

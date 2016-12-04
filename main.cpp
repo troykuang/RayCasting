@@ -83,20 +83,20 @@ void drawScene(){	//for drawing with smooth
 	glShadeModel(GL_SMOOTH);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb); 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diff); 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec); 
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb); 
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diff); 
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec); 
+	// glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
 
-	// RIGHT
-	glColor3f(1,0,0);
-	glBegin(GL_POLYGON);
-		glVertex3f(0,0,0);
-		glVertex3f(20,0,0);
-		glVertex3f(20,20,0);
-		//glNormal3fv(norm);
-		glVertex3f(0,20,0);
-	glEnd();
+	// // RIGHT
+	// glColor3f(1,0,0);
+	// glBegin(GL_POLYGON);
+	// 	glVertex3f(0,0,0);
+	// 	glVertex3f(20,0,0);
+	// 	glVertex3f(20,20,0);
+	// 	//glNormal3fv(norm);
+	// 	glVertex3f(0,20,0);
+	// glEnd();
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb1); 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diff1); 
@@ -108,22 +108,25 @@ void drawScene(){	//for drawing with smooth
 		glVertex3f(0,0,0);
 		glVertex3f(0,0,20);
 		glVertex3f(20,0,20);
-		//glNormal3fv(norm);
-		glVertex3f(20,0,0);
 
+		float norm[3]={0,1,0};
+		glNormal3fv(norm);
+		glVertex3f(20,0,0);
 	glEnd();
-	glColor3f(0,0,1);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_ambS); 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diffS); 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_specS); 
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shinyS);
-	glBegin(GL_POLYGON);
-		glVertex3f(0,0,0);
-		glVertex3f(0,20,0);
-		glVertex3f(0,20,20);
-		//glNormal3fv(norm);
-		glVertex3f(0,0,20);
-	glEnd();
+
+	// glEnd();
+	// glColor3f(0,0,1);
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_ambS); 
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diffS); 
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_specS); 
+	// glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shinyS);
+	// glBegin(GL_POLYGON);
+	// 	glVertex3f(0,0,0);
+	// 	glVertex3f(0,20,0);
+	// 	glVertex3f(0,20,20);
+	// 	//glNormal3fv(norm);
+	// 	glVertex3f(0,0,20);
+	// glEnd();
 
 }
 
@@ -166,6 +169,10 @@ void drawObj(SceneObject s){
 			glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny4);
 			break;
 	}
+
+	glRotatef(s.orientation[0],1,0,0);
+	glRotatef(s.orientation[1],0,1,0);
+	glRotatef(s.orientation[2],0,0,1);
 
 	glTranslatef(s.position[0],s.position[1],s.position[2]);
 	glScalef(s.scale[0], s.scale[1], s.scale[2]);
@@ -382,7 +389,7 @@ void CalcIntersections(SceneObject &s){
 //display function, also calls the position update and ray calc
 void display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -459,11 +466,12 @@ void init(void)
 {
 	glClearColor(0.118, 0.565, 1.000, 1);
 	glColor3f(1, 1, 1);
-	glEnable(GL_DEPTH_TEST);
+
+	
 	glEnable(GL_COLOR_MATERIAL);
-	//glFrontFace(GL_CCW);
-	//glCullFace(GL_BACK);
-	//glEnable(GL_CULL_FACE);
+	// glFrontFace(GL_CCW);
+	// glCullFace(GL_BACK);
+	// glEnable(GL_CULL_FACE);
 
 
 	glMatrixMode(GL_PROJECTION);
@@ -472,7 +480,8 @@ void init(void)
 
 
 	//ENABLING THE LIGHTING YAY
-	//glEnable(GL_LIGHTING); 
+	glEnable(GL_LIGHTING); 
+	glEnable(GL_DEPTH_TEST);
 	
 	//initially lightstate 1
 	glEnable(GL_LIGHT0); 
@@ -540,6 +549,7 @@ void callBackInit(){
 	glutMotionFunc(motion);
 	glutPassiveMotionFunc(passive);
 	glutReshapeFunc(reshape);
+
 	//glutTimerFunc(0, FPS, 0);
 }
 
@@ -547,7 +557,7 @@ void callBackInit(){
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);		//starts up GLUT
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	glutInitWindowSize(WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT);
 	glutInitWindowPosition(50, 50);

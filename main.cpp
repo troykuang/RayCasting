@@ -19,7 +19,8 @@
 
 
 int mouseX = 0, mouseY = 0; //global vars to save mouse x/y coord
-int SceneAngle = 0;
+int SceneAngleY = 0;
+int SceneAngleZ = 0;
 
 //Globals
 //float camPos[] = {39,34,33};	//where the camera is
@@ -457,7 +458,8 @@ void display(void)
 	
 	glPushMatrix();
 
-		glRotatef(SceneAngle,0,1,0);
+		glRotatef(SceneAngleY,0,1,0);
+		glRotatef(SceneAngleZ,0,0,1);
 
 		drawAxis();
 		drawScene();
@@ -475,14 +477,20 @@ void keyboard(unsigned char key, int xIn, int yIn)
 	int mod = glutGetModifiers();
 	switch (key)
 	{	
-		case 91:
-			SceneAngle --;
+		case 91: // [
+			SceneAngleY --;
 			glutPostRedisplay();
 			break;
-		case 93:
-			SceneAngle ++;
+		case 93: // ]
+			SceneAngleY ++;
 			glutPostRedisplay();
 			break;
+		case 57:
+			SceneAngleZ --;
+			glutPostRedisplay();
+		case 48:
+			SceneAngleZ ++;
+			glutPostRedisplay();
 		case 49:
 			materialCurrent = 0;
 			cout<<"material 0"<<endl;

@@ -377,7 +377,7 @@ void CalcIntersections(SceneObject &s){
 		if(pt[0] > s.position[0] - BOUND_OFFSET && pt[0] < s.position[0] + BOUND_OFFSET &&
 			pt[1] > s.position[1]- BOUND_OFFSET && pt[1] < s.position[1]+ BOUND_OFFSET &&
 			pt[2] > s.position[2] - BOUND_OFFSET && pt[2] < s.position[2] + BOUND_OFFSET){
-			s.selected = true;
+			s.intersected = true;
 			printf("YAAAAAS\n");
 		}
 
@@ -461,7 +461,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 'R':
 		case 'r':
 		{
-			camPos[0]= 23;
+			camPos[0]=23;
 			camPos[1]=18;
 			camPos[2]=33;
 			shapes.clear();
@@ -510,13 +510,29 @@ void init(void)
 void mouse(int btn, int state, int x, int y){
 	mouseX = x;
 	mouseY = WINDOW_SIZE_HEIGHT - y;
+	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				CalcIntersections(*it);
+			}
 	if (btn == GLUT_LEFT_BUTTON){
 		if (state == GLUT_DOWN){
 			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
-				CalcIntersections(*it);
+				if (it->intersected){
+					it->selected = true;
+				}
+			}	
+		}
+	}
+	if (btn == GLUT_RIGHT_BUTTON){
+		if (state == GLUT_DOWN){
+
+
+
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->intersected){
+					it = shapes.erase(it);
+				}
 			}
 		}
-
 	}
 	glutPostRedisplay();
 }

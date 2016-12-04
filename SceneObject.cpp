@@ -6,6 +6,7 @@ using namespace std;
 SceneObject::SceneObject(){
 	type = 1;	//default if they dont set a type
 	selected = false;	//after being created it is selected automatically
+	intersected = false;
 	size = 1;
 
 	//to use for the normals
@@ -32,6 +33,14 @@ SceneObject::SceneObject(){
 	updateBounds();
 	calcNorms();
 }
+
+// bool SceneObject::operator== (const SceneObject& p1, const SceneObject& p2)
+//     {
+//         return 
+//             (p1.type() == p2.type()) && 
+//             (p1.selected() == p2.selected()) &&
+//             (p1.intersected() == p2.intersected());
+//     }
 
 
 SceneObject::~SceneObject(){

@@ -22,6 +22,7 @@ public:
 	void computeNorm(float[3],float[3]);
 	void calcNorms();
 	bool selected;
+	bool intersected;
 	float position [3];
 	float orientation [3];
 	float scale[3];
@@ -30,6 +31,7 @@ public:
 
 	//for the bounding box
 	void updateBounds();
+	//bool operator==(const SceneObject& ,const SceneObject&);
 	float boundingVertices [8][3];
 
 	int boundingFaces [6][4];

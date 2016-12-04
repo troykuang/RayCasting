@@ -185,17 +185,20 @@ void drawObj(SceneObject s){
 	glColor3f(0.45,0.366,0.3434);
     switch(s.getType()){
     	case 1:
-    		glutSolidCube(s.size);
+    		glutSolidCube(1);
     		break;
     	case 2:	//sphere
-    		glutSolidSphere(s.size,100,100);
+    		glutSolidSphere(0.5,100,100);
     		break;
     	case 3: 	//cone
-    		glutSolidCone(s.size,1,100,100);
+    		glutSolidCone(0.5,1,100,100);
     		break;
     	case 4:	//teapot
-    		glutSolidTeapot(s.size);
+    		glutSolidTeapot(1);
     		break;
+    	case 5:
+    		glutSolidTorus(0.15,0.3,100,100);
+    		break; 	//torus
     }
 
  //    glEnable(GL_LIGHT0);
@@ -453,6 +456,16 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			{
 			SceneObject c;
 			c.setType(3);
+			c.materialState = materialCurrent;
+			shapes.insert(shapes.end(), c);
+			glutPostRedisplay();
+			break;
+		}
+		case 'D':
+		case 'd':
+		{
+			SceneObject c;
+			c.setType(5); 	//torus
 			c.materialState = materialCurrent;
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();

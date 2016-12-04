@@ -515,6 +515,31 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			glutPostRedisplay();
 			break;
 		}
+		case 'l':
+		case 'L':
+			switch(lightState){
+				case 1:	//light are all on
+					glDisable(GL_LIGHT0);
+					lightState = 2;
+					glutPostRedisplay();
+					break;
+				case 2:
+					glDisable(GL_LIGHT1);
+					lightState = 3;
+					glutPostRedisplay();
+					break;
+				case 3:	//they are both disables
+					glEnable(GL_LIGHT0);
+					lightState = 4;
+					glutPostRedisplay();
+					break;
+				case 4:
+					glEnable(GL_LIGHT1);
+					lightState = 1;
+					glutPostRedisplay();
+					cout<<"here"<<endl;
+					break;
+			}
 
 	}
 }

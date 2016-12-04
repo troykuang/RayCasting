@@ -216,6 +216,7 @@ void drawObj(SceneObject s){
 
      if(s.selected){
     	/*cout<<"HERE"<<endl;*/
+
     	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     	glColor3f(1.0f, 1.0f, 1.0f); 
     	
@@ -490,9 +491,11 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 57:
 			SceneAngleZ --;
 			glutPostRedisplay();
+			break;
 		case 48:
 			SceneAngleZ ++;
 			glutPostRedisplay();
+			break;
 		case 49:
 			materialCurrent = 0;
 			cout<<"material 0"<<endl;

@@ -11,10 +11,15 @@
 #include <stdlib.h>
 #include "SceneObject.h"
 #include <list>
+#include <iostream>
+#include <fstream>
 
 #define WINDOW_SIZE_WIDTH 700
 #define WINDOW_SIZE_HEIGHT 700
 #define groundSize 100
+
+
+
 
 
 
@@ -567,6 +572,10 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			SceneObject c; //cube
 			c.setType(1);
 			c.changeMaterial(materialCurrent);
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+					it->intersected = false;
+					it->selected = false;
+			}
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -574,12 +583,48 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 'S':
 		case 's': 
 			{
-			SceneObject c; //sphere
-			c.setType(2);
-			c.changeMaterial(materialCurrent);
-			shapes.insert(shapes.end(), c);
-			glutPostRedisplay();
-			break;
+			if (mod == GLUT_ACTIVE_SHIFT){
+				// ofstream outputFile;
+				// outputFile.open("save.txt");
+				// for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				// 	outputFile << "-------------------------\n";
+				// 	outputFile << "Type:%i\n",it->getType();
+				// 	outputFile << "Scale:{%f,%f,%f}\n",it->scale[0],it->scale[1],it->scale[2] ;
+				// 	outputFile << "-------------------------\n";
+				// }
+				FILE * pFile;
+				pFile = fopen("save.txt","w");
+				for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+					fprintf(pFile,"-------------------------\n");
+					fprintf(pFile,"Type:%i\n",it->getType());
+					fprintf(pFile, "{selected,intersected}:{%d,%d}\n",it->selected,it->intersected );
+					fprintf(pFile,"Scale:{%f,%f,%f}\n",it->scale[0],it->scale[1],it->scale[2]);
+					fprintf(pFile,"position:{%f,%f,%f}\n",it->position[0],it->position[1],it->position[2]);
+					fprintf(pFile,"Orientation:{%f,%f,%f}\n",it->orientation[0],it->orientation[1],it->orientation[2]);
+
+					fprintf(pFile,"-------------------------\n");
+				}
+
+				
+				printf("file has been saved\n");
+				fclose (pFile);
+				
+
+				break;
+			}
+			else{
+
+				SceneObject c; //sphere
+				c.setType(2);
+				c.changeMaterial(materialCurrent);
+				for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+					it->intersected = false;
+					it->selected = false;
+				}
+				shapes.insert(shapes.end(), c);
+				glutPostRedisplay();
+				break;
+			}
 		}
 		case 'T':
 		case 't':
@@ -587,6 +632,10 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			SceneObject c; // teapot
 			c.setType(4);
 			c.changeMaterial(materialCurrent);
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				it->intersected = false;
+				it->selected = false;
+			}
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -597,6 +646,10 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			SceneObject c; // cone
 			c.setType(3);
 			c.changeMaterial(materialCurrent);
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				it->intersected = false;
+				it->selected = false;
+			}
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -617,6 +670,10 @@ void keyboard(unsigned char key, int xIn, int yIn)
 				SceneObject c; 
 				c.setType(5); 	//torus
 				c.materialState = materialCurrent;
+				for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+					it->intersected = false;
+					it->selected = false;
+				}
 				shapes.insert(shapes.end(), c);
 				glutPostRedisplay();
 				break;
@@ -981,6 +1038,7 @@ int main(int argc, char** argv)
 	callBackInit();
 
 	init();
+	
 
 	// SceneObject cube1;
 	// cube1.setType(1);

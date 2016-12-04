@@ -170,14 +170,14 @@ void drawObj(SceneObject s){
 			break;
 	}
 
+
+
+	glTranslatef(s.position[0],s.position[1],s.position[2]);
 	glRotatef(s.orientation[0],1,0,0);
 	glRotatef(s.orientation[1],0,1,0);
 	glRotatef(s.orientation[2],0,0,1);
-
-	glTranslatef(s.position[0],s.position[1],s.position[2]);
 	glScalef(s.scale[0], s.scale[1], s.scale[2]);
 	
-	//glRotatef(45,s.orientation[0],s.orientation[1], s.orientation[2]);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// glDisable(GL_LIGHT0);
@@ -455,6 +455,16 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			c.setType(3);
 			c.materialState = materialCurrent;
 			shapes.insert(shapes.end(), c);
+			glutPostRedisplay();
+			break;
+		}
+		case 'R':
+		case 'r':
+		{
+			camPos[0]= 23;
+			camPos[1]=18;
+			camPos[2]=33;
+			shapes.clear();
 			glutPostRedisplay();
 			break;
 		}

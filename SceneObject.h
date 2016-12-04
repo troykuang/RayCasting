@@ -28,7 +28,7 @@ public:
 	float scale[3];
 
 	int materialState;
-
+	void changeMaterial(int);
 	//for the bounding box
 	void updateBounds();
 	//bool operator==(const SceneObject& ,const SceneObject&);

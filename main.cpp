@@ -135,10 +135,13 @@ void drawScene(){	//for drawing with smooth
 void drawObj(SceneObject s){
 	s.updateBounds();
 	glPushMatrix();
+
+	cout<<"obj material: "<<s.materialState<<endl;
 	
 
     switch(s.materialState){
 		case 0:
+			//cout<<"here"<<endl;
 			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb); 
 			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diff); 
 			glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec); 
@@ -151,6 +154,7 @@ void drawObj(SceneObject s){
 			glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny1);
 			break;
 		case 2:
+			//cout<<"here2"<<endl;
 			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb2); 
 			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diff2); 
 			glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec2); 
@@ -182,7 +186,7 @@ void drawObj(SceneObject s){
 
 	// glDisable(GL_LIGHT0);
 	// glDisable(GL_LIGHT1);
-	glColor3f(0.45,0.366,0.3434);
+	//glColor3f(0.45,0.366,0.3434);
     switch(s.getType()){
     	case 1:
     		glutSolidCube(1);
@@ -208,7 +212,7 @@ void drawObj(SceneObject s){
      printf("%d\n",s.selected);
 
      if(s.selected){
-    	cout<<"HERE"<<endl;
+    	/*cout<<"HERE"<<endl;*/
     	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     	glColor3f(1.0f, 1.0f, 1.0f); 
     	
@@ -416,7 +420,27 @@ void keyboard(unsigned char key, int xIn, int yIn)
 {
 	int mod = glutGetModifiers();
 	switch (key)
-	{
+	{	
+		case 49:
+			materialCurrent = 0;
+			cout<<"material 0"<<endl;
+			break;
+		case 50:
+			materialCurrent = 1;
+			cout<<"material 1"<<endl;
+			break;
+		case 51:
+			materialCurrent = 2;
+			cout<<"material 2"<<endl;
+			break;
+		case 52:
+			materialCurrent = 3;
+			cout<<"material 3"<<endl;
+			break;
+		case 53:
+			materialCurrent = 4;
+			cout<<"material 4"<<endl;
+			break;
 		case 'q':
 		case 27:	//27 is the esc key
 			exit(0);
@@ -471,6 +495,16 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			glutPostRedisplay();
 			break;
 		}
+		case 'M':
+		case 'm':
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				//printf("type:%i\n",it->getType());
+				it->changeMaterial(materialCurrent);
+
+
+				}
+			glutPostRedisplay();
+			break;
 		case 'R':
 		case 'r':
 		{
@@ -481,6 +515,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			glutPostRedisplay();
 			break;
 		}
+
 	}
 }
 

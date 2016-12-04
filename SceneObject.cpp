@@ -294,7 +294,9 @@ void SceneObject::assignFaces(){
 
 }
 
-
+void SceneObject::changeMaterial(int i){
+	materialState = i;
+}
 
 /*int main(){
 	SceneObject * s = new SceneObject("natasha",0,3,4);

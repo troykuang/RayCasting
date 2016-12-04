@@ -77,6 +77,8 @@ float m_diff4[] = {0.780392, 0.568627, 0.113725, 1};
 float m_spec4[] = {0.992157, 0.941176, 0.807843, 1}; 
 float shiny4 = 0.21794872; 
 
+int mod; //for mod keys
+
 
 
 void drawScene(){	//for drawing with smooth
@@ -133,10 +135,9 @@ void drawScene(){	//for drawing with smooth
 
 
 void drawObj(SceneObject s){
-	s.updateBounds();
+	//s.updateBounds();
 	glPushMatrix();
 
-	cout<<"obj material: "<<s.materialState<<endl;
 	
 
     switch(s.materialState){
@@ -181,6 +182,7 @@ void drawObj(SceneObject s){
 	glRotatef(s.orientation[1],0,1,0);
 	glRotatef(s.orientation[2],0,0,1);
 	glScalef(s.scale[0], s.scale[1], s.scale[2]);
+
 	
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -205,14 +207,14 @@ void drawObj(SceneObject s){
     		break; 	//torus
     }
 
- //    glEnable(GL_LIGHT0);
-	// glEnable(GL_LIGHT1);
      glPopMatrix();
 
      printf("%d\n",s.selected);
 
      if(s.selected){
-    	/*cout<<"HERE"<<endl;*/
+     	s.updateBounds();
+
+
     	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     	glColor3f(1.0f, 1.0f, 1.0f); 
     	
@@ -221,23 +223,6 @@ void drawObj(SceneObject s){
      	for(int i=0; i< 6; i++){ //go through the faces
     			glBegin(GL_TRIANGLE_FAN);
     			
-    			// cout<<s.boundingVertices[s.boundingFaces[i][0]][0]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][0]][1]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][0]][2]<<endl;
-
-    			// cout<<s.boundingVertices[s.boundingFaces[i][1]][0]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][1]][1]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][1]][2]<<endl;
-
-
-    			// cout<<s.boundingVertices[s.boundingFaces[i][2]][0]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][2]][1]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][2]][2]<<endl;
-
-
-    			// cout<<s.boundingVertices[s.boundingFaces[i][3]][0]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][3]][1]<<" ";
-    			// cout<<s.boundingVertices[s.boundingFaces[i][3]][2]<<endl;
 
     			glVertex3f(s.boundingVertices[s.boundingFaces[i][0]][0],s.boundingVertices[s.boundingFaces[i][0]][1],s.boundingVertices[s.boundingFaces[i][0]][2]);
     			glVertex3f(s.boundingVertices[s.boundingFaces[i][1]][0],s.boundingVertices[s.boundingFaces[i][1]][1],s.boundingVertices[s.boundingFaces[i][1]][2]);
@@ -250,6 +235,8 @@ void drawObj(SceneObject s){
     	
 
     }
+   
+
 }
 
 void drawObjects(){
@@ -268,19 +255,107 @@ void special(int key, int x, int y)
 	switch(key)
 	{
 		case GLUT_KEY_LEFT:
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	//translate negative x
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[0] -= 1;
+				}
+					
+				}
+
+        	}
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//rotate negative x
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[0] -= 0.5;
+				}
+					
+				}
+
+        	}
+        	else {
 			camPos[0] -= 1;
+			}
 			break;
 
 		case GLUT_KEY_RIGHT:
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	//translate right
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[0] += 1;
+				}
+					
+				}
+
+        	}
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's X scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[0] += 0.5;
+				}
+					
+				}
+
+        	} else{
 			camPos[0] += 1;
+			}
 			break;
 
 		case GLUT_KEY_UP:
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	//translate shape and increase its X scale
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[1] += 1;
+					
+				}
+			}
+
+        	}
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's X scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[1] += 0.5;
+					
+				}
+			}
+
+        	}else {
 			camPos[1] += 1;
+			}
 			break;
 
 		case GLUT_KEY_DOWN:
-			camPos[1] -= 1;
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	//translate shape and increase its X scale
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[1] -= 1;
+					
+				}
+			}
+
+        	}
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's X scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[1] -= 0.5;
+				}
+					
+				}
+
+        	} else {
+			camPos[1] -= 1; }
 			break;
 		case GLUT_KEY_F1:
 			light_pos0[1] -= 5;
@@ -450,7 +525,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			{
 			SceneObject c;
 			c.setType(1);
-			c.materialState = materialCurrent;
+			c.changeMaterial(materialCurrent);
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -460,7 +535,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			{
 			SceneObject c;
 			c.setType(2);
-			c.materialState = materialCurrent;
+			c.changeMaterial(materialCurrent);
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -470,7 +545,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			{
 			SceneObject c;
 			c.setType(4);
-			c.materialState = materialCurrent;
+			c.changeMaterial(materialCurrent);
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -480,7 +555,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			{
 			SceneObject c;
 			c.setType(3);
-			c.materialState = materialCurrent;
+			c.changeMaterial(materialCurrent);
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -490,7 +565,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		{
 			SceneObject c;
 			c.setType(5); 	//torus
-			c.materialState = materialCurrent;
+			c.changeMaterial(materialCurrent);
 			shapes.insert(shapes.end(), c);
 			glutPostRedisplay();
 			break;
@@ -505,6 +580,123 @@ void keyboard(unsigned char key, int xIn, int yIn)
 				}
 			glutPostRedisplay();
 			break;
+		case 'Z':
+		case 'z':
+			//GLUT_ACTIVE_ALT
+			//GLUT_ACTIVE_CTRL
+			//GLUT_ACTIVE_SHIFT
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	//get shape and increase its Z scale
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->scale[2] += 0.2;
+				}
+			}
+
+        	}
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's Z scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->scale[2] -= 0.2;
+				}
+				}
+
+        	}
+			break;
+		case 'Y':
+		case 'y':
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->scale[1] += 0.2;}
+					
+				}
+	        	//get shape and increase its Y scale
+
+        	}
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's Y scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->scale[1] -= 0.2; }
+					
+				}
+
+        	}
+			break;
+		case 'X':
+		case 'x':
+			mod = glutGetModifiers();
+	        if (mod == GLUT_ACTIVE_SHIFT){
+	        	//get shape and increase its X scale
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->scale[0] += 0.2;
+					
+				}
+			}
+
+        	}
+        	if(mod == GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's X scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->scale[0] -= 0.2;
+					
+				}
+
+        	}
+        }
+			break;
+		case 36:
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	//translate shape and increase its X scale
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[2] += 1;
+					
+				}
+
+        	}
+        	}
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's X scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[2] -= 0.5;
+					
+				}
+
+        	}
+        }
+			break;
+		case 35:
+			mod = glutGetModifiers();
+	        if (mod==GLUT_ACTIVE_SHIFT){
+	        	//translate shape and increase its X scale
+	        	for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[2] += 1;
+					
+				}
+
+        	}
+        }
+        	else if(mod==GLUT_ACTIVE_CTRL){
+        		//get shape and decrease it's X scale
+        		for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[2] -= 0.5;
+					
+				}
+
+        	}
+        }
+			break;
 		case 'R':
 		case 'r':
 		{
@@ -516,7 +708,10 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			break;
 		}
 
+	glutPostRedisplay();
+
 	}
+	glutPostRedisplay();
 }
 
 //initialize values
@@ -627,6 +822,46 @@ void callBackInit(){
 	//glutTimerFunc(0, FPS, 0);
 }
 
+void printInstructions(){
+	cout<<"Natasha DeCoste 001206976"<<endl;
+	cout<<"Troy Kuang 00XXXXXXX"<<endl;
+	cout<<endl<<endl<<endl;
+
+	cout<<"Key Controls:"<<endl;
+	cout<<endl<<endl;
+	cout<<"up arrow: camera moves positively along y-axis"<<endl;
+	cout<<"down arrow: camera moves negatively along y-axis"<<endl;
+	cout<<"left arrow: camera moves positively along x-axis"<<endl;
+	cout<<"right arrow: camera moves negatively along x-axis"<<endl<<endl;
+	cout<<"F1: Light moves negatively along y-axis"<<endl;
+	cout<<"F2: Light moves positively along y-axis"<<endl;
+	cout<<"F3: Light moves positively along z-axis"<<endl;
+	cout<<"F4: Light moves negatively along z-axis"<<endl<<endl;
+	cout<<"S key: creates a Sphere"<<endl;
+	cout<<"C key: creates a Cube"<<endl;
+	cout<<"N key: creates a Cone"<<endl;
+	cout<<"D key: creates a Donut (Torus)"<<endl;
+	cout<<"T key: creates a Teapot"<<endl<<endl;;
+	cout<<"1: switches to using Torquoise"<<endl;
+	cout<<"2: switches to using Cyan Rubber"<<endl;
+	cout<<"3: switches to using Gold"<<endl;
+	cout<<"4: switches to using Jade"<<endl;
+	cout<<"5: switches to using Brass"<<endl<<endl;
+	cout<<"CTRL + UP: Translate selected shape in the + Z direction"<<endl;
+	cout<<"CTRL + DOWN: Translate selected shape in the - Z direction"<<endl;
+	cout<<"CTRL + LEFT: Translate selected shape in the + X direction"<<endl;
+	cout<<"CTRL + RIGHT: Translate selected shape in the - X direction"<<endl<<endl;
+	cout<<"SHIFT + X: Scale up in the X-axis"<<endl;
+	cout<<"CTRL + X: Scale down in the X-axis"<<endl;
+	cout<<"SHIFT + Y: Scale up in the Y-axis"<<endl;
+	cout<<"CTRL + Y: Scale down in the Y-axis"<<endl;
+	cout<<"SHIFT + Z: Scale up in the Z-axis"<<endl;
+	cout<<"CTRL + Z: Scale down in the Z-axis"<<endl;
+
+
+}
+
+
 //main program entry point
 int main(int argc, char** argv)
 {
@@ -636,7 +871,9 @@ int main(int argc, char** argv)
 	glutInitWindowSize(WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT);
 	glutInitWindowPosition(50, 50);
 
-	glutCreateWindow("3GC3 Lecture Code Ray Picking");	//creates the window
+	printInstructions();
+
+	glutCreateWindow("Natasha and Troy Assignment 3");	//creates the window
 
 	callBackInit();
 

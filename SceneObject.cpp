@@ -45,6 +45,7 @@ SceneObject::SceneObject(){
 //     }
 
 
+
 SceneObject::~SceneObject(){
 
 }
@@ -160,7 +161,7 @@ void SceneObject::calcNorms(){
 	norms[0][0]= nvx;
 	norms[0][1]= nvy;
 	norms[0][2]= nvz;
-	printf("the norms0 are:%f,%f,%f\n",nvx,nvy,nvz);
+	//printf("the norms0 are:%f,%f,%f\n",nvx,nvy,nvz);
 
 
 	//Back 65 67
@@ -178,7 +179,7 @@ void SceneObject::calcNorms(){
 	norms[1][0]= nvx;
 	norms[1][1]= nvy;
 	norms[1][2]= nvz;
-	printf("the norms1 are:%f,%f,%f\n",nvx,nvy,nvz);
+	//printf("the norms1 are:%f,%f,%f\n",nvx,nvy,nvz);
 
 
 	//Left 51 54
@@ -196,7 +197,7 @@ void SceneObject::calcNorms(){
 	norms[2][0]= nvx;
 	norms[2][1]= nvy;
 	norms[2][2]= nvz;
-	printf("the norms2 are:%f,%f,%f\n",nvx,nvy,nvz);
+	//printf("the norms2 are:%f,%f,%f\n",nvx,nvy,nvz);
 
 
 	//Right 26 23
@@ -214,7 +215,7 @@ void SceneObject::calcNorms(){
 	norms[3][0]= nvx;
 	norms[3][1]= nvy;
 	norms[3][2]= nvz;
-	printf("the norms3 are:%f,%f,%f\n",nvx,nvy,nvz);
+	//printf("the norms3 are:%f,%f,%f\n",nvx,nvy,nvz);
 
 
 	//Top 56 51
@@ -232,7 +233,7 @@ void SceneObject::calcNorms(){
 	norms[4][0]= nvx;
 	norms[4][1]= nvy;
 	norms[4][2]= nvz;
-	printf("the norms4 are:%f,%f,%f\n",nvx,nvy,nvz);
+	//printf("the norms4 are:%f,%f,%f\n",nvx,nvy,nvz);
 
 
 	//Btm 74 73
@@ -250,7 +251,7 @@ void SceneObject::calcNorms(){
 	norms[5][0]= nvx;
 	norms[5][1]= nvy;
 	norms[5][2]= nvz;
-	printf("the norms5 are:%f,%f,%f\n",nvx,nvy,nvz);
+	//printf("the norms5 are:%f,%f,%f\n",nvx,nvy,nvz);
 	
 
 

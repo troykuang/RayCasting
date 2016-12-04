@@ -17,10 +17,7 @@
 #define WINDOW_SIZE_WIDTH 700
 #define WINDOW_SIZE_HEIGHT 700
 #define groundSize 100
-
-
-
-
+#define BOUND_OFFSET 0.55
 
 
 int mouseX = 0, mouseY = 0; //global vars to save mouse x/y coord
@@ -217,7 +214,7 @@ void drawObj(SceneObject s){
 
      glPopMatrix();
 
-     printf("%d\n",s.selected);
+    // ("%d\n",s.selected);
 
      if(s.selected){
 
@@ -443,9 +440,9 @@ void CalcIntersections(SceneObject &s){
 	Rd[1] /= m;
 	Rd[2] /= m;
 
-	printf("R0: %f, %f, %f | ", R0[0], R0[1], R0[2]);
-	printf("R1: %f, %f, %f | ", R1[0], R1[1], R1[2]);
-	printf("Rd: %f, %f, %f | ", Rd[0], Rd[1], Rd[2]);
+	// printf("R0: %f, %f, %f | ", R0[0], R0[1], R0[2]);
+	// printf("R1: %f, %f, %f | ", R1[0], R1[1], R1[2]);
+	// printf("Rd: %f, %f, %f | ", Rd[0], Rd[1], Rd[2]);
 
 	//---calculate intersection point now-----------------------------------
 	//approx the teapot with a box of radius 1 centered around the teapot centered
@@ -456,7 +453,7 @@ void CalcIntersections(SceneObject &s){
 	//calculate t value from z dir;
 	double t = (((double)s.position[2]) - R0[2])/Rd[2];
 
-		printf("t: %f | ", t);
+		// printf("t: %f | ", t);
 
 		//use t value to find x and y of our intersection point
 		double pt[3];
@@ -464,23 +461,22 @@ void CalcIntersections(SceneObject &s){
 		pt[1] = R0[1] + t * Rd[1];
 		pt[2] = s.position[2];
 		
-		printf("pt: %f, %f, %f | ", pt[0], pt[1], pt[2]);
+		// printf("pt: %f, %f, %f | ", pt[0], pt[1], pt[2]);
 
 		//now that we have our point on the xy plane at the level of the teapot,
 		//use it to see if this point is inside a box centered at the teapots
 		//location
-		// if(pt[0] > s.position[0] - BOUND_OFFSET && pt[0] < s.position[0] + BOUND_OFFSET &&
-		// 	pt[1] > s.position[1]- BOUND_OFFSET && pt[1] < s.position[1]+ BOUND_OFFSET &&
-		// 	pt[2] > s.position[2] - BOUND_OFFSET && pt[2] < s.position[2] + BOUND_OFFSET){
-		// 	s.intersected = true;
-		// 	printf("YAAAAAS\n");
-		// }
-		if(pt[0] > s.xMin && pt[0] < s.xMax &&
-			pt[1] > s.yMin && pt[1] < s.yMax &&
-			pt[2] > s.zMin && pt[2] < s.zMax){
+		if(pt[0] > s.position[0] - BOUND_OFFSET && pt[0] < s.position[0] + BOUND_OFFSET &&
+			pt[1] > s.position[1]- BOUND_OFFSET && pt[1] < s.position[1]+ BOUND_OFFSET &&
+			pt[2] > s.position[2] - BOUND_OFFSET && pt[2] < s.position[2] + BOUND_OFFSET){
 			s.intersected = true;
-			printf("YAAAAAS\n");
 		}
+		// if(pt[0] > s.xMin && pt[0] < s.xMax &&
+		// 	pt[1] > s.yMin && pt[1] < s.yMax &&
+		// 	pt[2] > s.zMin && pt[2] < s.zMax){
+		// 	s.intersected = true;
+		// 	// printf("YAAAAAS\n");
+		// }
 
 	
 
@@ -501,16 +497,16 @@ void display(void)
 	
 	
 	gluLookAt(camPos[0], camPos[1], camPos[2], 0, 0, 0, 0,1,0);
-	printf("%f,%f,%f\n",camPos[0], camPos[1], camPos[2]);
-	printf("light_pos0: %f,%f,%f\n",light_pos0[0],light_pos0[1],light_pos0[2]);
-	printf("light_pos1: %f,%f,%f\n",light_pos1[0],light_pos1[1],light_pos1[2]);
+	// printf("%f,%f,%f\n",camPos[0], camPos[1], camPos[2]);
+	// printf("light_pos0: %f,%f,%f\n",light_pos0[0],light_pos0[1],light_pos0[2]);
+	// printf("light_pos1: %f,%f,%f\n",light_pos1[0],light_pos1[1],light_pos1[2]);
 	
 	glPushMatrix();
 
 		glRotatef(SceneAngleY,0,1,0);
 		glRotatef(SceneAngleZ,0,0,1);
 
-		drawAxis();
+		//drawAxis();
 		drawScene();
 		drawObjects();
 	glPopMatrix();
@@ -534,7 +530,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			SceneAngleY ++;
 			glutPostRedisplay();
 			break;
-		case 57:
+		case 57: // ROATE by z
 			SceneAngleZ --;
 			glutPostRedisplay();
 			break;
@@ -606,7 +602,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 				}
 
 				
-				printf("file has been saved\n");
+				printf("File has been saved\n");
 				fclose (pFile);
 				
 
@@ -656,17 +652,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		}
 		case 'D':
 		case 'd':
-		{
-			if (mod == GLUT_ACTIVE_SHIFT){
-				for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
-				if (it->selected){
-					it->orientation[1] += 4;
-				}
-				}
-				glutPostRedisplay();
-				break;
-		}
-			else{
+		{	
 				SceneObject c; 
 				c.setType(5); 	//torus
 				c.materialState = materialCurrent;
@@ -677,7 +663,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 				shapes.insert(shapes.end(), c);
 				glutPostRedisplay();
 				break;
-			}
+			
 			
 		}
 		case 'M':
@@ -841,13 +827,28 @@ void keyboard(unsigned char key, int xIn, int yIn)
 					cout<<"here"<<endl;
 					break;
 			}
-		case 'A':
-		case 'a':
+		case 'U':
+		case 'u':
 		{
 			if (mod == GLUT_ACTIVE_SHIFT){
 				for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
 				if (it->selected){
 					it->orientation[1] -= 4;
+				}
+			}
+		}
+			
+			glutPostRedisplay();
+			break;
+
+		}
+		case 'I':
+		case 'i':
+		{
+			if (mod == GLUT_ACTIVE_SHIFT){
+				for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[1] += 4;
 				}
 			}
 		}
@@ -983,40 +984,67 @@ void callBackInit(){
 }
 
 void printInstructions(){
-	cout<<"Natasha DeCoste 001206976"<<endl;
-	cout<<"Troy Kuang 001402031"<<endl;
-	cout<<endl<<endl<<endl;
-
-	cout<<"Key Controls:"<<endl;
 	cout<<endl<<endl;
-	cout<<"up arrow: camera moves positively along y-axis"<<endl;
-	cout<<"down arrow: camera moves negatively along y-axis"<<endl;
-	cout<<"left arrow: camera moves positively along x-axis"<<endl;
-	cout<<"right arrow: camera moves negatively along x-axis"<<endl<<endl;
+	cout<<"-----------------------------------------------------------------------"<<endl;
+	cout<<"-----------------------COMP SCI 3GC3 : Assignment 3--------------------"<<endl;
+	cout<<"-------------------------Natasha DeCoste 001206976---------------------"<<endl;
+	cout<<"---------------------------Chaoyi Kuang 001402031----------------------"<<endl;
+	cout<<endl<<endl;
+
+	cout<<"--------------------------------Key Controls---------------------------"<<endl;
+	cout<<endl;
+	cout<<"Up arrow: camera moves positively along y-axis"<<endl;
+	cout<<"Down arrow: camera moves negatively along y-axis"<<endl;
+	cout<<"Left arrow: camera moves positively along x-axis"<<endl;
+	cout<<"Right arrow: camera moves negatively along x-axis"<<endl<<endl;
+
+	cout<<"[/] : Rotate the whole scene by Y-axis"<<endl;
+	cout<<"0/9 : Rotate the whole scene by Z-axis"<<endl;
+
+
+	cout<<"L: Light control (two lights)"<<endl;
 	cout<<"F1: Light moves negatively along y-axis"<<endl;
 	cout<<"F2: Light moves positively along y-axis"<<endl;
 	cout<<"F3: Light moves positively along z-axis"<<endl;
 	cout<<"F4: Light moves negatively along z-axis"<<endl<<endl;
+
 	cout<<"S key: creates a Sphere"<<endl;
 	cout<<"C key: creates a Cube"<<endl;
 	cout<<"N key: creates a Cone"<<endl;
 	cout<<"D key: creates a Donut (Torus)"<<endl;
 	cout<<"T key: creates a Teapot"<<endl<<endl;;
+
 	cout<<"1: switches to using Torquoise"<<endl;
 	cout<<"2: switches to using Cyan Rubber"<<endl;
 	cout<<"3: switches to using Gold"<<endl;
 	cout<<"4: switches to using Jade"<<endl;
-	cout<<"5: switches to using Brass"<<endl<<endl;
+	cout<<"5: switches to using Brass"<<endl;
+	cout<<"M: Apply chosen material to selected object"<<endl<<endl;
+
 	cout<<"CTRL + UP: Translate selected shape in the + Z direction"<<endl;
 	cout<<"CTRL + DOWN: Translate selected shape in the - Z direction"<<endl;
 	cout<<"CTRL + LEFT: Translate selected shape in the + X direction"<<endl;
 	cout<<"CTRL + RIGHT: Translate selected shape in the - X direction"<<endl<<endl;
+
 	cout<<"SHIFT + X: Scale up in the X-axis"<<endl;
 	cout<<"CTRL + X: Scale down in the X-axis"<<endl;
 	cout<<"SHIFT + Y: Scale up in the Y-axis"<<endl;
 	cout<<"CTRL + Y: Scale down in the Y-axis"<<endl;
 	cout<<"SHIFT + Z: Scale up in the Z-axis"<<endl;
 	cout<<"CTRL + Z: Scale down in the Z-axis"<<endl;
+
+	cout<<"CTRL + U/I: Rotate selected object"<<endl<<endl;
+
+	cout<<"Right Click: Delete the object"<<endl<<endl;
+
+	cout<<"R: Reset"<<endl;
+	cout<<"SHIFT + S: Save to text file"<<endl;
+	cout<<"Esc/Q: Quit the program"<<endl;
+
+
+
+
+
 
 
 }

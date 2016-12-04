@@ -14,10 +14,12 @@
 
 #define WINDOW_SIZE_WIDTH 700
 #define WINDOW_SIZE_HEIGHT 700
-#define BOUND_OFFSET 0.55
+#define groundSize 100
+
 
 
 int mouseX = 0, mouseY = 0; //global vars to save mouse x/y coord
+int SceneAngle = 0;
 
 //Globals
 //float camPos[] = {39,34,33};	//where the camera is
@@ -105,13 +107,13 @@ void drawScene(){	//for drawing with smooth
 	//FLOOR
 	glColor3f(0,1,0);
 	glBegin(GL_POLYGON);		
-		glVertex3f(0,0,0);
-		glVertex3f(0,0,20);
-		glVertex3f(20,0,20);
+		glVertex3f(-groundSize/2,0,-groundSize/2);
+		glVertex3f(-groundSize/2,0,groundSize/2);
+		glVertex3f(groundSize/2,0,groundSize/2);
 
 		float norm[3]={0,1,0};
 		glNormal3fv(norm);
-		glVertex3f(20,0,0);
+		glVertex3f(groundSize/2,0,-groundSize/2);
 	glEnd();
 
 	// glEnd();
@@ -448,12 +450,20 @@ void display(void)
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos0);
 	glLightfv(GL_LIGHT1, GL_POSITION, light_pos1);
 
+	
+	
 	gluLookAt(camPos[0], camPos[1], camPos[2], 0, 0, 0, 0,1,0);
 	printf("%f,%f,%f\n",camPos[0], camPos[1], camPos[2]);
+	
+	glPushMatrix();
 
-	drawAxis();
-	drawScene();
-	drawObjects();
+		glRotatef(SceneAngle,0,1,0);
+
+		drawAxis();
+		drawScene();
+		drawObjects();
+	glPopMatrix();
+	
 	
 	//switch our buffers for a smooth animation
 	glutSwapBuffers();
@@ -465,6 +475,14 @@ void keyboard(unsigned char key, int xIn, int yIn)
 	int mod = glutGetModifiers();
 	switch (key)
 	{	
+		case 91:
+			SceneAngle --;
+			glutPostRedisplay();
+			break;
+		case 93:
+			SceneAngle ++;
+			glutPostRedisplay();
+			break;
 		case 49:
 			materialCurrent = 0;
 			cout<<"material 0"<<endl;

@@ -29,7 +29,7 @@ SceneObject::SceneObject(){
 
 	//default is original orientation (no rotation)
 	orientation[0] = 0;
-	orientation[1] = 0;
+	orientation[1] = 0; // on plane rotation
 	orientation[2] = 0;
 
 	updateBounds();

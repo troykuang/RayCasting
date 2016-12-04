@@ -264,23 +264,61 @@ void drawObjects(){
 void special(int key, int x, int y)
 {
 	/* arrow key presses move the camera */
+	int mod = glutGetModifiers();
 
 	switch(key)
 	{
 		case GLUT_KEY_LEFT:
+		if (mod == GLUT_ACTIVE_SHIFT){
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[0] -= 1;
+				}
+			}
+
+		}
+		else{ 
 			camPos[0] -= 1;
+		}
 			break;
 
 		case GLUT_KEY_RIGHT:
+		if (mod == GLUT_ACTIVE_SHIFT){
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[0] += 1;
+				}
+			}
+		}
+		else{ 
 			camPos[0] += 1;
+		}
 			break;
 
 		case GLUT_KEY_UP:
+		if (mod == GLUT_ACTIVE_SHIFT){
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[2] -= 1;
+				}
+			}
+		}
+		else{ 
 			camPos[1] += 1;
+		}
 			break;
 
 		case GLUT_KEY_DOWN:
+		if (mod == GLUT_ACTIVE_SHIFT){
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->position[2] += 1;
+				}
+			}
+		}
+		else{ 
 			camPos[1] -= 1;
+		}
 			break;
 		case GLUT_KEY_F1:
 			light_pos0[1] -= 5;
@@ -454,7 +492,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 'C':
 		case 'c':
 			{
-			SceneObject c;
+			SceneObject c; //cube
 			c.setType(1);
 			c.materialState = materialCurrent;
 			shapes.insert(shapes.end(), c);
@@ -462,9 +500,9 @@ void keyboard(unsigned char key, int xIn, int yIn)
 			break;
 		}
 		case 'S':
-		case 's':
+		case 's': 
 			{
-			SceneObject c;
+			SceneObject c; //sphere
 			c.setType(2);
 			c.materialState = materialCurrent;
 			shapes.insert(shapes.end(), c);
@@ -474,7 +512,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 'T':
 		case 't':
 			{
-			SceneObject c;
+			SceneObject c; // teapot
 			c.setType(4);
 			c.materialState = materialCurrent;
 			shapes.insert(shapes.end(), c);
@@ -484,7 +522,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 'N':
 		case 'n':
 			{
-			SceneObject c;
+			SceneObject c; // cone
 			c.setType(3);
 			c.materialState = materialCurrent;
 			shapes.insert(shapes.end(), c);
@@ -494,7 +532,7 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 'D':
 		case 'd':
 		{
-			SceneObject c;
+			SceneObject c; 
 			c.setType(5); 	//torus
 			c.materialState = materialCurrent;
 			shapes.insert(shapes.end(), c);
@@ -504,11 +542,10 @@ void keyboard(unsigned char key, int xIn, int yIn)
 		case 'M':
 		case 'm':
 			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
-				//printf("type:%i\n",it->getType());
-				it->changeMaterial(materialCurrent);
-
-
+				if (it->selected){
+					it->changeMaterial(materialCurrent);
 				}
+			}
 			glutPostRedisplay();
 			break;
 		case 'R':
@@ -546,6 +583,21 @@ void keyboard(unsigned char key, int xIn, int yIn)
 					cout<<"here"<<endl;
 					break;
 			}
+		case 'A':
+		case 'a':
+		{
+			for (std::list<SceneObject>::iterator it=shapes.begin(); it != shapes.end(); ++it){
+				if (it->selected){
+					it->orientation[1] += 4;
+				}
+			}
+			glutPostRedisplay();
+			break;
+
+		}
+
+
+
 
 	}
 }
